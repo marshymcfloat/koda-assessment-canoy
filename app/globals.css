@@ -1,26 +1,252 @@
 @import "tailwindcss";
+@import "tw-animate-css";
+@import "shadcn/tailwind.css";
 
+/* Class-based dark mode: `.dark` is toggled on <html> by ThemeProvider. */
+@custom-variant dark (&:where(.dark, .dark *));
+
+/*
+  Editorial dashboard theme. We keep the shadcn token contract (background,
+  card, primary, muted, border, ring, ...) so the radix-vega components stay
+  consistent, but re-skin the brand to a warm near-white surface + indigo
+  accent, and add semantic Status / Priority tokens for the domain.
+*/
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --radius: 0.625rem;
+
+  --background: oklch(0.98 0.004 95);
+  --foreground: oklch(0.23 0.02 280);
+  --card: oklch(1 0 0);
+  --card-foreground: oklch(0.23 0.02 280);
+  --popover: oklch(1 0 0);
+  --popover-foreground: oklch(0.23 0.02 280);
+
+  --primary: oklch(0.52 0.22 277);
+  --primary-foreground: oklch(0.985 0 0);
+
+  --secondary: oklch(0.96 0.006 95);
+  --secondary-foreground: oklch(0.3 0.02 280);
+  --muted: oklch(0.965 0.005 95);
+  --muted-foreground: oklch(0.53 0.015 285);
+  --accent: oklch(0.95 0.025 277);
+  --accent-foreground: oklch(0.34 0.07 277);
+
+  --destructive: oklch(0.58 0.22 18);
+  --border: oklch(0.9 0.006 95);
+  --input: oklch(0.9 0.006 95);
+  --ring: oklch(0.52 0.22 277);
+
+  --chart-1: oklch(0.52 0.22 277);
+  --chart-2: oklch(0.6 0.13 215);
+  --chart-3: oklch(0.65 0.15 145);
+  --chart-4: oklch(0.7 0.16 70);
+  --chart-5: oklch(0.62 0.2 12);
+
+  /* Status accents (text / soft background pills) */
+  --status-planning: #2563eb;
+  --status-planning-bg: #e8efff;
+  --status-progress: #4f46e5;
+  --status-progress-bg: #ecebff;
+  --status-hold: #b45309;
+  --status-hold-bg: #fdf0dd;
+  --status-completed: #047857;
+  --status-completed-bg: #dcf5ea;
+
+  /* Priority accents (left accent bar + label) */
+  --priority-high: #e11d48;
+  --priority-medium: #d97706;
+  --priority-low: #64748b;
+
+  /* Elevation — soft, layered shadows so surfaces sit on the page (not just bordered). */
+  --shadow-card: 0 1px 2px oklch(0.23 0.02 280 / 0.04), 0 4px 12px oklch(0.23 0.02 280 / 0.05);
+  --shadow-card-hover: 0 2px 4px oklch(0.23 0.02 280 / 0.06), 0 12px 28px oklch(0.52 0.22 277 / 0.12);
+  --shadow-pop: 0 8px 30px oklch(0.23 0.02 280 / 0.10);
+
+  /* Backdrop texture — a faint indigo wash + dot grid behind the content. */
+  --grid-dot: oklch(0.52 0.22 277 / 0.05);
+  --wash-1: oklch(0.55 0.22 277 / 0.06);
+  --wash-2: oklch(0.6 0.13 215 / 0.05);
+}
+
+.dark {
+  --background: oklch(0.17 0.01 285);
+  --foreground: oklch(0.95 0.005 285);
+  --card: oklch(0.21 0.012 285);
+  --card-foreground: oklch(0.95 0.005 285);
+  --popover: oklch(0.21 0.012 285);
+  --popover-foreground: oklch(0.95 0.005 285);
+
+  --primary: oklch(0.7 0.16 280);
+  --primary-foreground: oklch(0.18 0.02 285);
+
+  --secondary: oklch(0.27 0.012 285);
+  --secondary-foreground: oklch(0.95 0 0);
+  --muted: oklch(0.27 0.012 285);
+  --muted-foreground: oklch(0.71 0.015 285);
+  --accent: oklch(0.31 0.035 280);
+  --accent-foreground: oklch(0.92 0.025 280);
+
+  --destructive: oklch(0.7 0.19 22);
+  --border: oklch(1 0 0 / 12%);
+  --input: oklch(1 0 0 / 15%);
+  --ring: oklch(0.7 0.16 280);
+
+  --chart-1: oklch(0.7 0.16 280);
+  --chart-2: oklch(0.65 0.13 215);
+  --chart-3: oklch(0.68 0.15 145);
+  --chart-4: oklch(0.75 0.16 70);
+  --chart-5: oklch(0.68 0.2 12);
+
+  --status-planning: #93b4ff;
+  --status-planning-bg: #1c2740;
+  --status-progress: #b4b0ff;
+  --status-progress-bg: #232148;
+  --status-hold: #f0c178;
+  --status-hold-bg: #3a2c14;
+  --status-completed: #6ee7b7;
+  --status-completed-bg: #123227;
+
+  --priority-high: #fb7185;
+  --priority-medium: #fbbf24;
+  --priority-low: #94a3b8;
+
+  --shadow-card: 0 1px 2px oklch(0 0 0 / 0.3), 0 4px 14px oklch(0 0 0 / 0.28);
+  --shadow-card-hover: 0 2px 6px oklch(0 0 0 / 0.35), 0 14px 34px oklch(0.7 0.16 280 / 0.22);
+  --shadow-pop: 0 10px 36px oklch(0 0 0 / 0.45);
+
+  --grid-dot: oklch(0.95 0.005 285 / 0.04);
+  --wash-1: oklch(0.7 0.16 280 / 0.10);
+  --wash-2: oklch(0.65 0.13 215 / 0.07);
 }
 
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+  --color-chart-1: var(--chart-1);
+  --color-chart-2: var(--chart-2);
+  --color-chart-3: var(--chart-3);
+  --color-chart-4: var(--chart-4);
+  --color-chart-5: var(--chart-5);
+
+  --color-status-planning: var(--status-planning);
+  --color-status-planning-bg: var(--status-planning-bg);
+  --color-status-progress: var(--status-progress);
+  --color-status-progress-bg: var(--status-progress-bg);
+  --color-status-hold: var(--status-hold);
+  --color-status-hold-bg: var(--status-hold-bg);
+  --color-status-completed: var(--status-completed);
+  --color-status-completed-bg: var(--status-completed-bg);
+
+  --color-priority-high: var(--priority-high);
+  --color-priority-medium: var(--priority-medium);
+  --color-priority-low: var(--priority-low);
+
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
+
+  --font-sans: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
+  --font-display: var(--font-space-grotesk), var(--font-inter), sans-serif;
+  --font-mono: var(--font-geist-mono), ui-monospace, monospace;
+
+  --shadow-card: var(--shadow-card);
+  --shadow-card-hover: var(--shadow-card-hover);
+  --shadow-pop: var(--shadow-pop);
+
+  --animate-rise: rise 0.5s cubic-bezier(0.16, 1, 0.3, 1) both;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+@keyframes rise {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
   }
 }
 
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+  body {
+    @apply bg-background text-foreground;
+    font-family: var(--font-sans);
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+  }
+  /*
+    Backdrop: a faint dot grid plus two soft color washes anchored to the top.
+    Fixed so it stays put while content scrolls, and behind everything (-z-10).
+    This is what stops the app from reading as a flat block of one color.
+  */
+  body::before {
+    content: "";
+    position: fixed;
+    inset: 0;
+    z-index: -10;
+    pointer-events: none;
+    background-image:
+      radial-gradient(var(--grid-dot) 1px, transparent 1px),
+      radial-gradient(60rem 40rem at 15% -10%, var(--wash-1), transparent 60%),
+      radial-gradient(50rem 36rem at 100% 0%, var(--wash-2), transparent 55%);
+    background-size: 22px 22px, 100% 100%, 100% 100%;
+    background-position: 0 0, 0 0, 0 0;
+  }
+}
+
+/* Editorial section eyebrow — small, tracked-out, muted label above a block. */
+.eyebrow {
+  font-size: 0.6875rem;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--muted-foreground);
+}
+
+/* Per-item entrance stagger for the streamed project list. */
+.stagger > * {
+  animation: var(--animate-rise);
+}
+.stagger > *:nth-child(1) { animation-delay: 0ms; }
+.stagger > *:nth-child(2) { animation-delay: 40ms; }
+.stagger > *:nth-child(3) { animation-delay: 80ms; }
+.stagger > *:nth-child(4) { animation-delay: 120ms; }
+.stagger > *:nth-child(5) { animation-delay: 160ms; }
+.stagger > *:nth-child(6) { animation-delay: 200ms; }
+.stagger > *:nth-child(n + 7) { animation-delay: 240ms; }
+
+/* Tabular figures for dates, counts and ids. */
+.tabular {
+  font-variant-numeric: tabular-nums;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
 }

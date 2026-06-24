@@ -1,0 +1,37 @@
+- generic [active] [ref=e1]:
+  - generic [ref=e256] [cursor=pointer]:
+    - button "Open Next.js Dev Tools" [ref=e257]:
+      - img [ref=e258]
+    - generic [ref=e343]:
+      - button "Open issues overlay" [ref=e344]:
+        - generic [ref=e345]:
+          - generic [ref=e346]: "0"
+          - generic [ref=e347]: "1"
+        - generic [ref=e348]: Issue
+      - button "Collapse issues badge" [ref=e349]:
+        - img [ref=e350]
+  - alert [ref=e261]
+  - banner [ref=e352]:
+    - generic [ref=e353]:
+      - link "Atlas Project Tracker" [ref=e354] [cursor=pointer]:
+        - /url: /
+        - generic [ref=e355]: A
+        - generic [ref=e356]:
+          - generic [ref=e357]: Atlas
+          - generic [ref=e358]: Project Tracker
+      - generic [ref=e359]:
+        - button "Toggle theme" [ref=e360] [cursor=pointer]:
+          - img
+        - link "New project" [ref=e361] [cursor=pointer]:
+          - /url: /projects/new
+          - img
+          - generic [ref=e362]: New project
+  - main [ref=e363]:
+    - generic [ref=e364]:
+      - paragraph [ref=e365]: "404"
+      - generic [ref=e366]:
+        - heading "Page not found" [level=2] [ref=e367]
+        - paragraph [ref=e368]: The page you’re looking for doesn’t exist or has moved.
+      - link "Back to projects" [ref=e369] [cursor=pointer]:
+        - /url: /
+  - region "Notifications alt+T"
